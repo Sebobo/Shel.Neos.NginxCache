@@ -1,0 +1,56 @@
+Shel\Neos\NginxCache\Aspects\ContentCacheAspect:
+  properties:
+    logger:
+      object:
+        factoryObjectName: Neos\Flow\Log\PsrLoggerFactoryInterface
+        factoryMethodName: get
+        arguments:
+          1:
+            value: nginxCacheLogger
+
+Shel\Neos\NginxCache\Service\CacheControlService:
+  properties:
+    contentCacheFrontend:
+      object:
+        factoryObjectName: Neos\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: Neos_Fusion_Content
+    logger:
+      object:
+        factoryObjectName: Neos\Flow\Log\PsrLoggerFactoryInterface
+        factoryMethodName: get
+        arguments:
+          1:
+            value: nginxCacheLogger
+
+Shel\Neos\NginxCache\Service\CacheFlushService:
+  properties:
+    logger:
+      object:
+        factoryObjectName: Neos\Flow\Log\PsrLoggerFactoryInterface
+        factoryMethodName: get
+        arguments:
+          1:
+            value: nginxCacheLogger
+
+Shel\Neos\NginxCache\Service\ContentCacheFlusherService:
+  properties:
+    logger:
+      object:
+        factoryObjectName: Neos\Flow\Log\PsrLoggerFactoryInterface
+        factoryMethodName: get
+        arguments:
+          1:
+            value: nginxCacheLogger
+
+Shel\Neos\NginxCache\Cache\MetadataAwareStringFrontend:
+  properties:
+    logger:
+      object:
+        factoryObjectName: Neos\Flow\Log\PsrLoggerFactoryInterface
+        factoryMethodName: get
+        arguments:
+          1:
+            value: nginxCacheLogger

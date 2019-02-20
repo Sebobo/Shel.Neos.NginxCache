@@ -1,0 +1,17 @@
+Neos:
+  Neos:
+    modules:
+      administration:
+        submodules:
+          nginxCache:
+            label: 'NGINX cache purging'
+            controller: \Shel\Neos\NginxCache\Controller\CacheController
+            description: 'Clear NGINX cache.'
+            icon: 'fa fa-bolt'
+            additionalResources:
+              styleSheets:
+                - 'resource://Shel.Neos.NginxCache/Public/Styles/Module.css'
+            privilegeTarget: 'Shel.Neos.NginxCache:BackendModuleClearCache'
+    fusion:
+      autoInclude:
+        Shel.Neos.NginxCache: true

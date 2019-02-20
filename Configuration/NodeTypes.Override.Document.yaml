@@ -1,0 +1,26 @@
+'Neos.Neos:Document':
+  ui:
+    inspector:
+      groups:
+        caching:
+          label: 'NGINX cache'
+          position: 50
+          tab: meta
+  properties:
+    disableNginxCache:
+      type: boolean
+      defaultValue: FALSE
+      ui:
+        label: 'Disable NGINX cache'
+        reloadIfChanged: FALSE
+        inspector:
+          group: 'caching'
+    cacheTimeToLive:
+      type: string
+      ui:
+        label: 'Time-to-live'
+        reloadIfChanged: FALSE
+        inspector:
+          group: 'caching'
+      validation:
+        'Neos.Neos/Validation/IntegerValidator': []

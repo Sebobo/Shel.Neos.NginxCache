@@ -1,0 +1,185 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+<f:layout name="BackendSubModule" />
+
+<f:section name="content">
+    <f:render partial="SearchForm" arguments="{searchWord: searchWord, activeSites: activeSites, selectedSite: selectedSite}" />
+    <div>
+        <f:if condition="{sites -> f:count()} > 0">
+            <f:then>
+                <table class="neos-table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Path</th>
+                        <th>Custom config</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <f:for each="{sites}" as="site">
+                        <f:if condition="{sites -> f:count()} > 1">
+                            <tr class="neos-folder">
+                                <td class="neos-priority1" colspan="3" title="{site.site.nodeName}">
+                                    Site: {site.site.name}
+                                </td>
+
+                                <td class="neos-priority1 neos-aRight">
+                                    <i class="fold-toggle fa fa-chevron-up icon-white"
+                                       data-toggle="fold-{site.site.nodeName}"></i>
+                                </td>
+                            </tr>
+                        </f:if>
+                        <f:for each="{site.nodes}" as="node">
+                            <f:alias map="{url: '{neos:uri.node(node: node, absolute: 1)}'}">
+                                <tr class="fold-{site.site.nodeName}">
+                                    <td title="{node.identifier}">
+                                        <f:if condition="{node.nodeType.fullConfiguration.ui.icon}">
+                                            <i title="{node.nodeType.label}" class="{node.nodeType.fullConfiguration.ui.icon}"></i>
+                                        </f:if>
+                                        <a href="{url}" title="{node.label}" target="_blank">{node.label}</a>
+                                    </td>
+
+                                    <td title="{node.path}">
+                                        <a href="{url}" title="{node.label}" target="_blank">{neos:uri.node(node: node)}</a>
+                                    </td>
+
+                                    <td>
+                                        <f:if condition="{node.properties.disableNginxCache}">
+                                            <f:then><i class="fa fa-warning-sign"></i> Caching disabled</f:then>
+                                            <f:else>
+                                                {f:if(condition: node.properties.cacheTimeToLive, then: '<span title="Time-to-live"><i class="fa fa-time"></i> {node.properties.cacheTimeToLive} s</span>')}
+                                            </f:else>
+                                        </f:if>
+                                    </td>
+
+                                    <td class="neos-action">
+                                        <button class="neos-button" data-toggle="modal" href="#{node.identifier}"
+                                                title="Additional info" data-check-url="{f:uri.action(action: 'checkUrl', format: 'json', arguments: {url: url})}">
+                                            <i class="fa fa-info-circle"></i>
+                                        </button>
+
+                                        <f:link.action action="purgeCache" format="json" arguments="{node: node}"
+                                                       class="neos-button clear-cache" title="Clear cache"
+                                                       data="{node-label: node.label}">
+                                            <i class="fa fa-bolt"></i>
+                                        </f:link.action>
+
+                                        <div class="neos-hide" id="{node.identifier}">
+                                            <div class="neos-modal">
+                                                <div class="neos-modal-header">
+                                                    <button type="button" class="neos-close neos-button" data-dismiss="modal"></button>
+                                                    <div class="neos-header">Additional info</div>
+                                                </div>
+                                                <div class="neos-modal-footer">
+                                                    <div id="url-check-loading">
+                                                        Fetching information <span class="neos-ellipsis"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="neos-modal-backdrop neos-in"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </f:alias>
+                        </f:for>
+                    </f:for>
+                    </tbody>
+                </table>
+            </f:then>
+            <f:else><p>No nodes were found matching "{searchWord}".</p></f:else>
+        </f:if>
+    </div>
+    <script>
+        (function($) {
+            $('.fold-toggle').click(function() {
+                $(this).toggleClass('fa-chevron-down fa-chevron-up');
+                $('tr.' + $(this).data('toggle')).toggle();
+            });
+            $('.neos-button[data-toggle="modal"]').on('click', function() {
+                var modalContainer = $($(this).attr('href')),
+                    modalContent = $('.neos-modal-footer', modalContainer),
+                    url = $(this).data('check-url');
+                $('.neos-modal-backdrop', modalContainer).on('click', function() {
+                    modalContainer.modal('hide');
+                });
+                $(document).on('keyup', function(e) {
+                    if (e.which == 27) {
+                        modalContainer.modal('hide');
+                    }
+                });
+                $('#url-check-loading', modalContent).show();
+                var toHHMMSS = function(secondsNumber) {
+                    if (secondsNumber < 0) {
+                        return '00:00:00';
+                    }
+                    secondsNumber = parseInt(secondsNumber, 10);
+                    var hours   = Math.floor(secondsNumber / 3600);
+                    var minutes = Math.floor((secondsNumber - (hours * 3600)) / 60);
+                    var seconds = secondsNumber - (hours * 3600) - (minutes * 60);
+                    hours = hours < 10 ? '0' + hours : hours;
+                    minutes = minutes < 10 ? '0' + minutes : minutes;
+                    seconds = seconds < 10 ? '0' + seconds : seconds;
+                    return hours + ':' + minutes + ':' + seconds;
+                };
+                $.ajax(url).done(function(data, textStatus, jqXHR) {
+                    var response = data,
+                        list = $('<dl class="dl-horizontal" />');
+                    list.append($('<div/>').html('<dt>Host</dt><dd>' + response.host + '</dd>'));
+                    list.append($('<div/>').html('<dt>URL</dt><dd><a href="' + response.url + '" target="_blank">' + response.url + '</a></dd>'));
+                    ['X-Cacheable', 'X-Cache', 'Age', 'X-Cache-TTL'].forEach(function(header) {
+                        var value = response.headers[header];
+                        if (value) {
+                            switch (header) {
+                                case 'Age':
+                                    value = '<span title="' + value + ' s">' + toHHMMSS(value) + '</span>';
+                                    break;
+                                case 'X-Cache-TTL':
+                                    value = parseInt(value);
+                                    list.append($('<div/>').html('<dt>' + header + '</dt><dd><span title="' + value + ' s">' + toHHMMSS(value) + '</span></dd>'));
+                                    header = 'Expires';
+                                    value = value - parseInt(response.headers['Age'], 10);
+                                    value = '<span title="' + value + ' s">' + toHHMMSS(value) + '</span>';
+                                    break;
+                            }
+                            list.append($('<div/>').html('<dt>' + header + '</dt><dd>' + value + '</dd>'));
+                        }
+                    });
+                    $('#url-check-loading', modalContent).hide();
+                    $('dl', modalContent).remove();
+                    modalContent.append(list);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    $('#url-check-loading', modalContent).hide();
+                    console.error(jqXHR);
+                    var message = 'An error occurred while fetching additional information: ' + errorThrown;
+                    if (window.Typo3Neos) {
+                        window.Typo3Neos.Notification.error(message);
+                    } else {
+                        alert(message);
+                    }
+                });
+            });
+            $('.clear-cache').on('click', function(e) {
+                e.preventDefault();
+                var button = $(this);
+                button.html('<span class="neos-ellipsis"></span>');
+                $.ajax($(this).attr('href')).done(function(data, textStatus, jqXHR) {
+                    button.html('<i class="fa fa-bolt"></i>');
+                    if (window.Typo3Neos) {
+                        window.Typo3Neos.Notification.ok('Cleared cache for node "' + button.data('node-label') + '"');
+                    } else {
+                        alert(message);
+                    }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    button.html('<i class="fa fa-bolt"></i>');
+                    console.error(jqXHR);
+                    var message = 'An error occurred while clearing the cache: ' + errorThrown;
+                    if (window.Typo3Neos) {
+                        window.Typo3Neos.Notification.error(message);
+                    } else {
+                        alert(message);
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
+</f:section>

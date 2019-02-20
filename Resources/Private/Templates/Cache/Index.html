@@ -1,0 +1,46 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<f:layout name="BackendSubModule" />
+
+<f:section name="content">
+    <f:render partial="SearchForm" arguments="{activeSites: activeSites}" />
+    <legend>Configuration</legend>
+    <dl class="dl-horizontal">
+        <dt>NGINX URL(s)</dt>
+        <dd><f:if condition="{settings.servers -> neos:getType()} == 'array'">
+            <f:then>
+                <f:for each="{settings.servers}" as="server" iteration="iterator">
+                    <span class="neos-badge">{server}</span>&nbsp;
+                </f:for>
+            </f:then>
+            <f:else>
+                <span class="neos-badge">{settings.servers}</span>
+            </f:else
+            ></f:if>
+        </dd>
+
+        <f:if condition="{settings.baseUri}">
+            <dt>Base URI</dt>
+            <dd><span class="neos-badge">{settings.baseUri}</span></dd>
+        </f:if>
+
+        <dt>Purge module enabled</dt>
+        <dd><span class="neos-badge">{f:if(condition: settings.purge.installed, then: 'Yes', else: 'No')}</span></dd>
+
+        <f:if condition="{settings.purge.installed}">
+            <dt>Purge location</dt>
+            <dd><span class="neos-badge">{settings.purge.location}</span></dd>
+        </f:if>
+
+        <dt>Default maximum age</dt>
+        <dd>
+            <span class="neos-badge">
+                {f:if(condition: settings.cacheHeaders.defaultSharedMaximumAge, then: '{settings.cacheHeaders.defaultSharedMaximumAge} s', else: 'N/A')}
+            </span>
+        </dd>
+        <f:if condition="{settings.cacheHeaders.disabled}">
+            <dt>Cache headers</dt>
+            <dd><span class="neos-badge neos-badge-important">Disabled</span></dd>
+        </f:if>
+    </dl>
+</f:section>

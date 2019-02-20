@@ -1,0 +1,41 @@
+{
+    "name": "shel/neos-nginx-cache",
+    "type": "neos-plugin",
+    "description": "A plugin for Neos CMS to auto purge NGINX proxy cache after publishing",
+    "license": "GPL-3.0",
+    "keywords": [
+        "http",
+        "proxy",
+        "caching",
+        "purge",
+        "invalidation",
+        "nginx",
+        "neos",
+        "flow"
+    ],
+    "authors": [
+        {
+            "name": "Sebastian Helzle",
+            "email": "sebastian@helzle.it",
+            "homepage": "https://www.helzle.it",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "neos/neos": "^4.1",
+        "php-http/guzzle6-adapter": "^1.1.1",
+        "friendsofsymfony/http-cache": "^2.5.4",
+        "guzzlehttp/psr7": "^1.5.2",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shel\\Neos\\NginxCache\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Shel.Neos.NginxCache"
+        }
+    }
+}

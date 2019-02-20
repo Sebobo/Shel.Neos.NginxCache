@@ -1,0 +1,11 @@
+privilegeTargets:
+  'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+    'Shel.Neos.NginxCache:BackendModuleClearCache':
+      matcher: 'within(Shel\Neos\NginxCache\Controller\CacheController) && method(public .*->(?!initialize).*Action())'
+
+roles:
+  'Neos.Neos:Administrator':
+    privileges:
+      -
+        privilegeTarget: 'Shel.Neos.NginxCache:BackendModuleClearCache'
+        permission: GRANT

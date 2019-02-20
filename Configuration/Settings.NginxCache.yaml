@@ -1,0 +1,21 @@
+Shel:
+  Neos:
+    NginxCache:
+      # Disables NGINX cache requests if set to false (does not turn off NGINX proxy cache!)
+      enabled: true
+      # IP/URL or IPs/URLs (if array) NGINX is running on for requests (skip trailing slash)
+      servers: '127.0.0.1'
+      # The base uri for the generation of node urls
+      baseUri: ''
+      purge:
+        # Set to true if your NGINX installation has the purge module installed, if not only refresh is used
+        installed: false
+        # The subpath that trigger purges. See https://foshttpcache.readthedocs.io/en/stable/nginx-configuration.html
+        location: ''
+      # Cache header sending configuration
+      cacheHeaders:
+        # Default and maximum TTL in seconds
+        defaultSharedMaximumAge: null
+        # Disable sending headers (useful for staging environments)
+        disabled: false
+
