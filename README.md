@@ -20,13 +20,16 @@ to understand the main issue of caching and it's advantages and drawbacks.
 
 ### Features
 
-✓ Send refresh requests to NGINX when a page is published
-✓ Send invalidation requests to NGINX when a page is not available anymore (needs the optional NGINX purge module)
-✓ Send headers with each page to tell NGINX about the cache timeouts of a page
-✓ Backend module to check configuration and flush certain pages
-✓ Disable caching via node properties
-✓ Respect caching timeouts defined in fusion
-x Invalidate other pages than the published one
+* ✓ Send refresh requests to NGINX when a page is published
+* ✓ Send invalidation requests to NGINX when a page is not available anymore (needs the optional NGINX purge module)
+* ✓ Send headers with each page to tell NGINX about the cache timeouts of a page
+* ✓ Backend module to check configuration and flush certain pages
+* ✓ Disable caching via node properties
+* ✓ Respect caching timeouts defined in fusion
+
+Not possible yet
+
+* Invalidate other pages than the published one
 
 ## Requirements
 
