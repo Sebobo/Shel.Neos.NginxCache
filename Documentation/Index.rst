@@ -165,13 +165,13 @@ Full version::
                 # Cache page not found results for 1 minute
                 fastcgi_cache_valid 404 1m;
                 # Use cached version of a page if NGINX gets an error from php
-                fastcgi_cache_use_stale error timeout updating http_500;
+                fastcgi_cache_use_stale error timeout http_500;
                 # Let other requests wait if NGINX already receives a new result
                 fastcgi_cache_lock on;
                 # Cache identifier
                 fastcgi_cache_key "$scheme$request_method$host$request_uri$is_args$args";
                 # Triggers to bypass the cache
-                fastcgi_cache_bypass $arg_nocache $cookie_nocache $arg_comment $http_x_refresh $no_cache;
+                fastcgi_cache_bypass $http_x_refresh $no_cache;
                 # Allow NGINX to update a cache entry after a user get's a stale version
                 fastcgi_cache_background_update on;
                 # When this is set, a response from php is not cached
