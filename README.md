@@ -16,7 +16,7 @@ Therefore it's helpful to send refresh and invalidation notifications from your 
 This allows you to increase cache times and be sure that your visitors see current content with great performance.
 
 Read [An Introduction to Cache Invalidation](https://foshttpcache.readthedocs.io/en/stable/invalidation-introduction.html#an-introduction-to-cache-invalidation)
-to understand the main issue of caching and it's advantages and drawbacks.  
+to understand the main issue of caching and its advantages and drawbacks.  
 
 ### Features
 
@@ -25,7 +25,7 @@ to understand the main issue of caching and it's advantages and drawbacks.
 * ✓ Send headers with each page to tell NGINX about the cache timeouts of a page
 * ✓ Backend module to check configuration and flush certain pages
 * ✓ Disable caching via node properties
-* ✓ Respect caching timeouts defined in fusion
+* ✓ Respect caching timeouts defined in Fusion
 
 Not possible yet
 
@@ -43,7 +43,7 @@ Add the dependency to your site package like this
 
     composer require --no-update shel/neos-nginx-cache
     
-And then run `composer update` in your projects root folder.
+And then run `composer update` in your project's root folder.
 
 If you don't have the NGINX purge module, the package will only send refresh requests instead of using invalidations.
 You can find more information on how to setup the purge module [here](https://foshttpcache.readthedocs.io/en/stable/nginx-configuration.html#purge).              
@@ -62,7 +62,7 @@ For more information on the setup and configuration, see [the documentation](Doc
 
 This package was inspired by [MOC.Varnish](https://github.com/mocdk/MOC.Varnish).
 
-Varnish works similarly, but allows you to create a much finer configuration when and what is flushed from it's cache.
+Varnish works similarly, but allows you to create a much finer configuration when and what is flushed from its cache.
 But the setup & configuration needs more knowledge as you need the Varnish service running additionally
 and you need to configure your webserver to communicate with it.
 
