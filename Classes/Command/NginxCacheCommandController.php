@@ -52,14 +52,26 @@ class NginxCacheCommandController extends \Neos\Flow\Cli\CommandController
         $node = $context->getNodeByIdentifier($nodeIdentifier);
 
         $controllerContext = $this->contextBuildService->buildControllerContext();
-        $nodeUri = $this->linkingService->createNodeUri(
-            $controllerContext,
-            $node,
-            null,
-            'html',
-            true
-        );
 
-        $this->outputLine($nodeUri);
+        $nodeUri = '';
+
+        try {
+            $nodeUri = $this->linkingService->createNodeUri(
+                $controllerContext,
+                $node,
+                null,
+                'html',
+                true
+            );
+        } catch (\Exception $e) {
+            $this->outputLine($e->getMessage());
+        }
+
+        if ($nodeUri) {
+            $this->outputLine(sprintf('Invalidating %s', $nodeUri));
+            $this->cacheFlushService->invalidatePath($nodeUri);
+        } else {
+            $this->outputLine(sprintf('Failed generating the path for node with identifier %s', $nodeIdentifier));
+        }
     }
 }
