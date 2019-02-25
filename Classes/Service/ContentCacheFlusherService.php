@@ -144,7 +144,7 @@ class ContentCacheFlusherService
      * @param NodeInterface $node
      * @return NodeInterface
      */
-    protected function getClosestPublicDocumentNode(NodeInterface $node): NodeInterface
+    protected function getClosestPublicDocumentNode(NodeInterface $node): ?NodeInterface
     {
         $documentNode = $node;
         while ($documentNode && !$documentNode->getNodeType()->isOfType('Neos.Neos:Document')) {
