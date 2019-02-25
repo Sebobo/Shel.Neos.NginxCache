@@ -10,6 +10,8 @@ use Http\Client\Common\Plugin\ErrorPlugin;
 use Http\Client\Common\PluginClient;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Exception;
+use Neos\Utility\Exception\FilesException;
+use Neos\Utility\Files;
 use Psr\Log\LoggerInterface;
 use Http\Adapter\Guzzle6\Client as Guzzle6;
 
@@ -119,5 +121,26 @@ class CacheFlushService
                 }
             }
         }
+    }
+
+    /**
+     * Deletes the configured cache folder.
+     * Don't use this if you have multiple NGINX instances or NGINX is not on the same server as your application.
+     * The configured directly must be writable by the user running the application.
+     */
+    public function purgeLocalCache(): bool
+    {
+        if ($this->settings['localCachePath']) {
+            try {
+                Files::emptyDirectoryRecursively($this->settings['localCachePath']);
+                $this->logger->info('Purged local cache');
+                return true;
+            } catch (FilesException $e) {
+                $this->logger->error('Could not purge local cache', [$e->getMessage()]);
+            }
+        } else {
+            $this->logger->error('Could not purge local cache as it\'s path is not configured');
+        }
+        return false;
     }
 }

@@ -4,6 +4,11 @@
 
 <f:section name="content">
     <f:render partial="SearchForm" arguments="{activeSites: activeSites}" />
+
+    <f:if condition="{settings.localCachePath}">
+        <f:render partial="PurgeLocalCacheForm" arguments="{localCachePath: settings.localCachePath}" />
+    </f:if>
+
     <legend>Configuration</legend>
     <dl class="dl-horizontal">
         <dt>NGINX URL(s)</dt>
@@ -22,6 +27,11 @@
         <f:if condition="{settings.baseUri}">
             <dt>Base URI</dt>
             <dd><span class="neos-badge">{settings.baseUri}</span></dd>
+        </f:if>
+
+        <f:if condition="{settings.localCachePath}">
+            <dt>Local cache path</dt>
+            <dd><span class="neos-badge">{settings.localCachePath}</span></dd>
         </f:if>
 
         <dt>Purge module enabled</dt>

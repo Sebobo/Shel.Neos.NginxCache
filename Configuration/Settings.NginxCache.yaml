@@ -7,6 +7,8 @@ Shel:
       servers: '127.0.0.1'
       # The base uri for the generation of node urls
       baseUri: ''
+      # The path to nginx cache folder for this website used when flushing the whole cache
+      localCachePath: ''
       purge:
         # Set to true if your NGINX installation has the purge module installed, if not only refresh is used
         installed: false

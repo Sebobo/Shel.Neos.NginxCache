@@ -33,14 +33,19 @@ class NginxCacheCommandController extends \Neos\Flow\Cli\CommandController
     protected $linkingService;
 
     /**
-     * Clear all cache in NGINX for a optionally given domain
+     * Clear all NGINX cache entries on the local system.
      *
-     * @param string $domain The domain to flush, e.g. "example.com"
      * @return void
      */
-    public function clearCommand($domain = null)
+    public function purgeLocalCommand()
     {
-        $this->cacheFlushService->invalidateAll($domain);
+        $result = $this->cacheFlushService->purgeLocalCache();
+
+        if ($result) {
+            $this->outputLine('Local NGINX cache was cleared');
+        } else {
+            $this->outputLine('Local NGINX cache was not cleared, please check the logs');
+        }
     }
 
     /**

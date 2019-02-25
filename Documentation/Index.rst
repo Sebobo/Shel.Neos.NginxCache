@@ -211,6 +211,9 @@ Also check adapt your access log like in the configuration above to see cache in
 If you get `cURL error 52: Empty reply from server` in your log, verify the `servers` and `baseUri` options in
 your `Settings.yaml`. Match the protocol, port, etc... if you have issues.
 
+If the purge local cache does not work, you have to make sure, that the nginx user and the php user have
+read and write access to the cache path.
+
 Further adjustments for production environments
 -----------------------------------------------
 

@@ -52,6 +52,7 @@ class CacheController extends AbstractModuleController
      * @var ContentDimensionPresetSourceInterface
      */
     protected $contentDimensionPresetSource;
+
     /**
      * @var array
      */
@@ -128,6 +129,21 @@ class CacheController extends AbstractModuleController
         $service = new ContentCacheFlusherService();
         $service->flushForNode($node, $this->controllerContext);
         $this->view->assign('value', true);
+    }
+
+    /**
+     * Purges the local cache if configured
+     */
+    public function purgeLocalCacheAction()
+    {
+        $service = new CacheFlushService();
+        $result = $service->purgeLocalCache();
+        if ($result) {
+            $this->addFlashMessage('Local cache was purged.', 'Success', Message::SEVERITY_OK);
+        } else {
+            $this->addFlashMessage('Failed to purge local cache!', 'Error', Message::SEVERITY_ERROR);
+        }
+        $this->redirect('index');
     }
 
     /**
