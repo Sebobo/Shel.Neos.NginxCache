@@ -214,6 +214,17 @@ your `Settings.yaml`. Match the protocol, port, etc... if you have issues.
 If the purge local cache does not work, you have to make sure, that the nginx user and the php user have
 read and write access to the cache path.
 
+Commands
+--------
+
+Clearing the whole cache folder, requires setting `Shel.Neos.NginxCache.localCachePath` in your `Settings.yaml`::
+
+    ./flow nginxcache:purgelocal
+
+Flush the cache based for a single node, requires setting `Shel.Neos.NginxCache.baseUri` in your `Settings.yaml`::
+
+    ./flow nginxcache:flushnode <nodeIdentifier>
+
 Further adjustments for production environments
 -----------------------------------------------
 
