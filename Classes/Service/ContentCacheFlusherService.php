@@ -102,7 +102,7 @@ class ContentCacheFlusherService
         $documentNode = $this->getClosestPublicDocumentNode($node);
 
         if (!$documentNode) {
-            $this->logger->info('Skipped unreachable node from cache refresh ' . $documentNode->getIdentifier());
+            $this->logger->info('Skipped unreachable node from cache refresh ' . $node->getIdentifier());
             return;
         }
 
