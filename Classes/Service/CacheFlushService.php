@@ -81,7 +81,7 @@ class CacheFlushService
      */
     public function refreshPath($path)
     {
-        $this->logger->info('Refreshed path ' . $path);
+        $this->logger->info('Refreshing path ' . $path);
         $this->cacheInvalidator->refreshPath($path);
         $this->execute();
     }
@@ -92,7 +92,7 @@ class CacheFlushService
     public function invalidatePath($path)
     {
         if ($this->settings['purge']['installed']) {
-            $this->logger->info('Invalidated path ' . $path);
+            $this->logger->info('Invalidating path ' . $path);
             $this->cacheInvalidator->invalidatePath($path);
             $this->execute();
         } else {
