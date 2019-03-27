@@ -127,7 +127,6 @@ class ContentCacheFlusherService
         }
 
         if ($nodeUri) {
-
             if ($node->isRemoved() || $node->isHidden()) {
                 $this->logger->debug('Path added for invalidation ' . $nodeUri);
                 $this->pathsToInvalidate[$nodeUri] = sprintf('Node %s is not accessible anymore', $node->getLabel());
