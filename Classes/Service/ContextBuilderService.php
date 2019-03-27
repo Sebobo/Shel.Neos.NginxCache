@@ -12,10 +12,10 @@ use Neos\Flow\Annotations as Flow;
 class ContextBuilderService
 {
     /**
-     * @Flow\InjectConfiguration(path="servers")
+     * @Flow\InjectConfiguration(path="baseUri")
      * @var string
      */
-    protected $urlSchemeAndHost;
+    protected $baseUri;
 
     /**
      * @var ControllerContext
@@ -34,8 +34,8 @@ class ContextBuilderService
     public function buildControllerContext(): ControllerContext
     {
         if (!($this->controllerContext instanceof ControllerContext)) {
-            $httpRequest = Http\Request::create(new Http\Uri($this->urlSchemeAndHost));
-            $httpRequest->withAttribute(Http\Request::ATTRIBUTE_BASE_URI, new Http\Uri($this->urlSchemeAndHost));
+            $httpRequest = Http\Request::create(new Http\Uri($this->baseUri));
+            $httpRequest->withAttribute(Http\Request::ATTRIBUTE_BASE_URI, new Http\Uri($this->baseUri));
             $this->controllerContext = new ControllerContext(
                 new Mvc\ActionRequest($httpRequest),
                 new Http\Response(),
