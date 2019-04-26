@@ -46,7 +46,7 @@ class ContentCacheAspect
         if ($evaluateContext['cacheForPathDisabled']) {
             $nginxCacheIgnoreUncached = $runtime->evaluate($evaluateContext['fusionPath'] . '/__meta/cache/nginxCacheIgnoreUncached');
             if ($nginxCacheIgnoreUncached !== true) {
-                $this->logger->log(sprintf('NGINX cache disabled due to uncached path "%s" (can be prevented using "nginxCacheIgnoreUncached")', $evaluateContext['fusionPath']), LOG_DEBUG);
+                $this->logger->debug(sprintf('NGINX cache disabled due to uncached path "%s" (can be prevented using "nginxCacheIgnoreUncached")', $evaluateContext['fusionPath']));
                 $this->evaluatedUncached = true;
             }
         }
@@ -69,7 +69,7 @@ class ContentCacheAspect
 
         $nginxCacheIgnoreUncached = $runtime->evaluate($path . '/__meta/cache/nginxCacheIgnoreUncached');
         if ($nginxCacheIgnoreUncached !== true) {
-            $this->logger->log(sprintf('NGINX cache disabled due to uncached path "%s" (can be prevented using "nginxCacheIgnoreUncached")', $path . '/__meta/cache/nginxCacheIgnoreUncached'), LOG_DEBUG);
+            $this->logger->debug(sprintf('NGINX cache disabled due to uncached path "%s" (can be prevented using "nginxCacheIgnoreUncached")', $path . '/__meta/cache/nginxCacheIgnoreUncached'));
             $this->evaluatedUncached = true;
         }
     }
